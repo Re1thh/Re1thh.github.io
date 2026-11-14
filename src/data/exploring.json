@@ -1,0 +1,44 @@
+[
+  {
+    "name": "ta4j/ta4j",
+    "description": "Java library for technical-analysis indicators.",
+    "url": "https://github.com/ta4j/ta4j",
+    "upstream": true
+  },
+  {
+    "name": "tradingview/lightweight-charts",
+    "description": "Small, fast financial charting library for the web.",
+    "url": "https://github.com/tradingview/lightweight-charts",
+    "upstream": true
+  },
+  {
+    "name": "raeperd/realworld-springboot-java",
+    "description": "RealWorld example backend built with Spring Boot.",
+    "url": "https://github.com/raeperd/realworld-springboot-java",
+    "upstream": true
+  },
+  {
+    "name": "spring-petclinic/spring-petclinic-microservices",
+    "description": "Reference microservices app built on Spring Cloud.",
+    "url": "https://github.com/spring-petclinic/spring-petclinic-microservices",
+    "upstream": true
+  },
+  {
+    "name": "langchain-ai/local-deep-researcher",
+    "description": "Research agent that runs on a local LLM.",
+    "url": "https://github.com/langchain-ai/local-deep-researcher",
+    "upstream": true
+  },
+  {
+    "name": "evidence-dev/evidence",
+    "description": "Business intelligence as code: reports from SQL and Markdown.",
+    "url": "https://github.com/evidence-dev/evidence",
+    "upstream": true
+  },
+  {
+    "name": "alan2207/bulletproof-react",
+    "description": "Guide to a scalable architecture for React apps.",
+    "url": "https://github.com/alan2207/bulletproof-react",
+    "upstream": true
+  }
+]

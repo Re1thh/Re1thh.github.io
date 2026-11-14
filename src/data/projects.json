@@ -1,0 +1,26 @@
+[
+  {
+    "repo": "FoodRecipeApp",
+    "title": "FoodRecipeApp",
+    "description": "Recipe search page using the Edamam API, with results shown as cards.",
+    "stack": ["React", "JavaScript", "Tailwind CSS"],
+    "featured": 1,
+    "fallback": { "language": "JavaScript", "year": "2023", "stars": 0 }
+  },
+  {
+    "repo": "bankLoan",
+    "title": "bankLoan",
+    "description": "Spring Boot REST API training exercise for sanctioning loans and loan reports.",
+    "stack": ["Java", "Spring Boot", "JPA", "Maven"],
+    "featured": 2,
+    "fallback": { "language": "Java", "year": "2023", "stars": 0 }
+  },
+  {
+    "repo": "formvalidation",
+    "title": "formvalidation",
+    "description": "Small form validated with React Hook Form and Yup.",
+    "stack": ["React", "TypeScript", "React Hook Form", "Yup"],
+    "featured": 3,
+    "fallback": { "language": "TypeScript", "year": "2023", "stars": 0 }
+  }
+]

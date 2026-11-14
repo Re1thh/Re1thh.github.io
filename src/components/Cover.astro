@@ -1,0 +1,31 @@
+---
+// Typographic cover generated from the project name. Deterministic (same name,
+// same cover), theme-aware via CSS custom properties. Not a screenshot.
+interface Props { name: string; meta?: string }
+const { name, meta = "" } = Astro.props;
+
+let h = 2166136261;
+for (const ch of name) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+const rand = () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0), h / 4294967296);
+
+const W = 320, H = 200;
+const cols = 16, rows = 10, step = W / cols;
+const dots = [];
+for (let y = 0; y < rows; y++)
+  for (let x = 0; x < cols; x++)
+    if (rand() < 0.22) dots.push({ cx: x * step + step / 2, cy: y * step + step / 2, r: rand() < 0.08 ? 3 : 1.2 });
+// Accent dot stays in the top half so it never sits on the title text.
+const upper = dots.filter((d) => d.cy < H / 2);
+const accent = upper.length ? upper[Math.floor(rand() * upper.length)] : null;
+const angle = Math.round(rand() * 60 - 30);
+const initial = name.charAt(0).toUpperCase();
+const size = name.length > 12 ? 22 : 28;
+---
+<svg class="cover" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Generated cover for ${name}`} preserveAspectRatio="xMidYMid slice">
+  <rect width={W} height={H} class="c-bg" />
+  {dots.map((d) => <circle cx={d.cx} cy={d.cy} r={d.r} class="c-dot" />)}
+  <text x={W - 24} y={H + 24} class="c-initial" text-anchor="end" transform={`rotate(${angle} ${W - 60} ${H - 40})`}>{initial}</text>
+  {accent && <circle cx={accent.cx} cy={accent.cy} r="4" class="c-accent" />}
+  <text x="20" y={H - 44} class="c-name" font-size={size}>{name}</text>
+  <text x="20" y={H - 22} class="c-meta">{meta}</text>
+</svg>
