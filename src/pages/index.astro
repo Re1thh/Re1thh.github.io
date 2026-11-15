@@ -1,217 +1,296 @@
 ---
-import "@fontsource-variable/public-sans";
-import "@fontsource-variable/geist-mono";
-import "../styles/global.css";
+import Base from "../layouts/Base.astro";
 import Cover from "../components/Cover.astro";
 import curated from "../data/projects.json";
 import exploring from "../data/exploring.json";
 import { getProjects } from "../lib/github.js";
+import { site } from "../lib/site.js";
 
 const projects = await getProjects(curated);
-const built = new Date().toISOString().slice(0, 10);
 
-const site = {
-  name: "Revanth Reddy",
-  title: "Revanth Reddy, full-stack developer",
-  description:
-    "Revanth Reddy is a full-stack developer in Bengaluru working with Java, Spring Boot and React. Open to full-stack and software engineering roles.",
-  github: "https://github.com/Re1thh",
-  linkedin: "https://www.linkedin.com/in/revanth-reddy-thipparthi-348506274/",
-};
+const title = "Revanth Reddy, full-stack developer";
+const description =
+  "Revanth Reddy is a full-stack developer in Bengaluru working with Java, Spring Boot and React. Open to full-stack and software engineering roles.";
 
 const now = [
   ["Building", "Full-stack apps with Spring Boot and React"],
-  ["Stack", "Java, Spring Boot, React, TypeScript"],
   ["Based in", "Bengaluru, India"],
   ["Open to", "Full-Stack Developer, Software Engineer, Java Full-Stack roles"],
 ];
 
-const favicon =
-  "data:image/svg+xml," +
-  encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0c0c0c"/><text x="16" y="21.5" font-family="ui-monospace,monospace" font-size="14" font-weight="700" fill="#f5f5f5" text-anchor="middle">RR</text><circle cx="25" cy="7" r="2.5" fill="#8f8fff"/></svg>`
-  );
-const canonical = new URL("/", Astro.site).href;
-let d = 0;
-const delay = () => `--d:${(d++ * 60)}ms`;
----
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{site.title}</title>
-    <meta name="description" content={site.description} />
-    <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href={favicon} />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#fbfbfb" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0c0c0c" media="(prefers-color-scheme: dark)" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={site.title} />
-    <meta property="og:description" content={site.description} />
-    <meta name="twitter:card" content="summary" />
-    <script is:inline>
-      // Set theme and project view before first paint to avoid a flash.
-      (function () {
-        var d = document.documentElement, t = null, v = null;
-        try { t = localStorage.getItem("theme"); v = localStorage.getItem("view"); } catch (e) {}
-        if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        if (t === "dark") d.classList.add("dark");
-        if (v === "grid") d.dataset.view = "grid";
-      })();
-    </script>
-  </head>
-  <body>
-    <a class="skip" href="#main">Skip to content</a>
+const stack = [
+  ["Backend", ["Java", "Spring Boot", "JPA", "Maven"]],
+  ["Frontend", ["React", "TypeScript", "JavaScript", "Tailwind CSS"]],
+  ["Tools", ["Git"]],
+] as const;
 
-    <header class="topbar">
-      <a class="wordmark" href="#main" aria-label="Revanth Reddy, back to top">Revanth Reddy</a>
-      <div class="seg" role="group" aria-label="Colour theme">
-        <button type="button" class="seg-btn" data-theme-choice="light" aria-pressed="false" aria-label="Light theme" title="Light theme">
-          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1"/></g></svg>
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  jobTitle: site.role,
+  worksFor: { "@type": "Organization", name: site.employer },
+  address: { "@type": "PostalAddress", addressLocality: site.city },
+  url: "https://re1thh.github.io/",
+  sameAs: [site.linkedin, site.github],
+};
+
+const slug = (repo: string) => `project-${repo.toLowerCase()}`;
+const snake = "https://raw.githubusercontent.com/Re1thh/Re1thh/output";
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <section class="hero" id="top" aria-labelledby="hero-name">
+    <div class="hero-text">
+      <p class="status reveal"><span class="pulse" aria-hidden="true"></span>Open to full-stack roles</p>
+      <h1 id="hero-name" class="reveal">{site.name}</h1>
+      <p class="role reveal">{site.role} at {site.employer}</p>
+      <p class="bio reveal">
+        Full-stack developer working with Java, Spring Boot and React. I build web applications with Java services and REST APIs on the backend and React interfaces on the front.
+      </p>
+      <div class="actions reveal">
+        <a class="btn btn-primary" href={site.linkedin} target="_blank" rel="noopener noreferrer">
+          LinkedIn <span class="arrow" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span>
+        </a>
+        <a class="btn" href={site.github} target="_blank" rel="noopener noreferrer">
+          GitHub <span class="arrow" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="fan reveal" role="group" aria-label="Project covers">
+      {projects.map((p, i) => (
+        <a class={`fan-card fan-${i + 1}`} href={`#${slug(p.repo)}`} data-open={slug(p.repo)}>
+          <span class="fan-inner"><Cover name={p.title} meta={p.stack.slice(0, 3).join(" · ")} decorative /></span>
+          <span class="sr-only">{p.title}: jump to project details</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="now reveal" aria-labelledby="now-h">
+    <h2 id="now-h" class="label">Now</h2>
+    <dl class="kv">
+      {now.map(([k, v]) => (
+        <div><dt>{k}</dt><dd>{v}</dd></div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="block reveal" id="work" aria-labelledby="work-h">
+    <div class="block-head">
+      <h2 id="work-h" class="label">Selected work</h2>
+      <div class="seg" role="group" aria-label="Project layout">
+        <button type="button" class="seg-btn" data-view-choice="list" aria-pressed="true" aria-label="List view" title="List view">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><g fill="currentColor"><rect x="2" y="3" width="12" height="1.6" rx=".8"/><rect x="2" y="7.2" width="12" height="1.6" rx=".8"/><rect x="2" y="11.4" width="12" height="1.6" rx=".8"/></g></svg>
         </button>
-        <button type="button" class="seg-btn" data-theme-choice="dark" aria-pressed="false" aria-label="Dark theme" title="Dark theme">
-          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M13.5 9.6A5.6 5.6 0 0 1 6.4 2.5a5.6 5.6 0 1 0 7.1 7.1z" fill="currentColor"/></svg>
+        <button type="button" class="seg-btn" data-view-choice="grid" aria-pressed="false" aria-label="Grid view" title="Grid view">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><g fill="currentColor"><rect x="2" y="2" width="5" height="5" rx="1.2"/><rect x="9" y="2" width="5" height="5" rx="1.2"/><rect x="2" y="9" width="5" height="5" rx="1.2"/><rect x="9" y="9" width="5" height="5" rx="1.2"/></g></svg>
         </button>
       </div>
-    </header>
+    </div>
+    <p class="note">Small learning projects first built in 2023; the year on each row is the latest push. Select a row for details.</p>
 
-    <main id="main">
-      <section class="hero" aria-labelledby="hero-name">
-        <h1 id="hero-name" class="reveal" style={delay()}>{site.name}</h1>
-        <p class="role reveal" style={delay()}>Associate Software Developer at Mercedes-Benz Research and Development India</p>
-        <p class="bio reveal" style={delay()}>
-          Full-stack developer working with Java, Spring Boot and React. I build web applications with Java services and REST APIs on the backend and React interfaces on the front.
-        </p>
-      </section>
-
-      <section class="now reveal" style={delay()} aria-labelledby="now-h">
-        <h2 id="now-h" class="label">Now</h2>
-        <dl class="kv">
-          {now.map(([k, v]) => (
-            <div><dt>{k}</dt><dd>{v}</dd></div>
-          ))}
-        </dl>
-      </section>
-
-      <section class="block reveal" style={delay()} aria-labelledby="work-h">
-        <div class="block-head">
-          <h2 id="work-h" class="label">Selected work</h2>
-          <div class="seg" role="group" aria-label="Project layout">
-            <button type="button" class="seg-btn" data-view-choice="list" aria-pressed="true" aria-label="List view" title="List view">
-              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><g fill="currentColor"><rect x="2" y="3" width="12" height="1.6" rx=".8"/><rect x="2" y="7.2" width="12" height="1.6" rx=".8"/><rect x="2" y="11.4" width="12" height="1.6" rx=".8"/></g></svg>
+    <ul class="projects" id="projects">
+      {projects.map((p) => (
+        <li class="project" id={slug(p.repo)} data-repo={p.repo}>
+          <h3 class="project-h">
+            <button type="button" class="project-btn" aria-expanded="false" aria-controls={`${slug(p.repo)}-panel`}>
+              <span class="card" aria-hidden="true">
+                <span class="card-inner"><Cover name={p.title} meta={p.stack.join(" · ")} decorative /></span>
+              </span>
+              <span class="row">
+                <span class="name">{p.title}</span>
+                <span class="desc">{p.description}</span>
+                <span class="meta">
+                  <span class="sr-only">Primary language </span>{p.language}
+                  {p.year && <><span class="sep" aria-hidden="true"> · </span><span class="sr-only">, last updated </span>{p.year}</>}
+                  {p.live && p.stars > 0 && <><span class="sep" aria-hidden="true"> · </span><span aria-hidden="true">★ </span>{p.stars}<span class="sr-only"> stars</span></>}
+                </span>
+                <span class="chev" aria-hidden="true"></span>
+              </span>
             </button>
-            <button type="button" class="seg-btn" data-view-choice="grid" aria-pressed="false" aria-label="Grid view" title="Grid view">
-              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><g fill="currentColor"><rect x="2" y="2" width="5" height="5" rx="1.2"/><rect x="9" y="2" width="5" height="5" rx="1.2"/><rect x="2" y="9" width="5" height="5" rx="1.2"/><rect x="9" y="9" width="5" height="5" rx="1.2"/></g></svg>
-            </button>
+          </h3>
+          <div class="panel" id={`${slug(p.repo)}-panel`} hidden>
+            <p class="panel-desc">{p.description}</p>
+            <ul class="highlights">
+              {p.highlights.map((h: string) => <li>{h}</li>)}
+            </ul>
+            <ul class="chips" aria-label="Stack">
+              {p.stack.map((s: string) => <li class="chip">{s}</li>)}
+            </ul>
+            <p class="panel-foot">
+              <span class="panel-note">{p.note}</span>
+              <a class="code-link" href={p.url} target="_blank" rel="noopener noreferrer">View code <span aria-hidden="true">↗</span><span class="sr-only"> for {p.title} on GitHub (opens in a new tab)</span></a>
+            </p>
           </div>
+        </li>
+      ))}
+    </ul>
+    <p class="more"><a href={`${site.github}?tab=repositories`} target="_blank" rel="noopener noreferrer">All repositories on GitHub<span class="sr-only"> (opens in a new tab)</span></a></p>
+
+    <div class="preview" aria-hidden="true">
+      {projects.map((p) => (
+        <span class="preview-card" data-preview={p.repo}><Cover name={p.title} meta={p.stack.join(" · ")} decorative /></span>
+      ))}
+    </div>
+  </section>
+
+  <section class="block reveal" id="exploring" aria-labelledby="explore-h">
+    <h2 id="explore-h" class="label">Currently exploring</h2>
+    <p class="note">Open-source projects by other people that I have forked to read and learn from. <strong>These are not my projects</strong>: the name links to my fork, and “by …” links to the original author's repository.</p>
+    <ul class="explore">
+      {exploring.map((e) => (
+        <li class="explore-row">
+          <div class="explore-top">
+            <a class="name" href={e.fork} target="_blank" rel="noopener noreferrer">{e.repo}<span class="sr-only"> (my fork, opens in a new tab)</span></a>
+            <a class="by" href={e.upstream} target="_blank" rel="noopener noreferrer">by {e.owner}<span class="sr-only"> (original repository, opens in a new tab)</span></a>
+            <span class="meta">fork</span>
+          </div>
+          <p class="explore-desc">{e.description} <span class="studying"><span class="studying-k">studying:</span> {e.studying}</span></p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="block reveal" id="stack" aria-labelledby="stack-h">
+    <h2 id="stack-h" class="label">Stack</h2>
+    <dl class="stack">
+      {stack.map(([group, items]) => (
+        <div>
+          <dt>{group}</dt>
+          <dd><ul class="chips">{items.map((s) => <li class="chip">{s}</li>)}</ul></dd>
         </div>
+      ))}
+    </dl>
+  </section>
 
-        <ul class="projects" id="projects">
-          {projects.map((p) => (
-            <li>
-              <a class="project" href={p.url} target="_blank" rel="noopener noreferrer">
-                <span class="card" aria-hidden="true">
-                  <span class="card-inner"><Cover name={p.title} meta={p.stack.join(" · ")} /></span>
-                </span>
-                <span class="row">
-                  <span class="name">{p.title}</span>
-                  <span class="desc">{p.description}</span>
-                  <span class="meta">
-                    <span class="sr-only">Primary language </span>{p.language}
-                    {p.year && <><span class="sep" aria-hidden="true"> · </span><span class="sr-only">, last updated </span>{p.year}</>}
-                  </span>
-                </span>
-                <span class="sr-only"> (opens GitHub in a new tab)</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p class="more"><a href={`${site.github}?tab=repositories`} target="_blank" rel="noopener noreferrer">All repositories on GitHub<span class="sr-only"> (opens in a new tab)</span></a></p>
-      </section>
+  <section class="block reveal" id="activity" aria-labelledby="activity-h">
+    <h2 id="activity-h" class="label">Activity</h2>
+    <figure class="snake" data-snake>
+      <div class="snake-frame">
+        <img class="snake-light" src={`${snake}/snake.svg`} alt="Animated grid of GitHub contributions over the past year" width="880" height="192" loading="lazy" decoding="async" onerror="this.closest('section').hidden=true" />
+        <img class="snake-dark" src={`${snake}/snake-dark.svg`} alt="Animated grid of GitHub contributions over the past year" width="880" height="192" loading="lazy" decoding="async" onerror="this.closest('section').hidden=true" />
+        <button type="button" class="snake-play" hidden>Show contribution animation</button>
+      </div>
+      <figcaption><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub contributions<span class="sr-only"> (opens in a new tab)</span></a></figcaption>
+    </figure>
+  </section>
 
-      <section class="block reveal" style={delay()} aria-labelledby="explore-h">
-        <h2 id="explore-h" class="label">Currently exploring</h2>
-        <p class="note">Open-source projects by other people that I have forked to read and learn from. <strong>These are not my projects</strong>; each link goes to the original repository.</p>
-        <ul class="explore">
-          {exploring.map((e) => (
-            <li>
-              <a class="explore-row" href={e.url} target="_blank" rel="noopener noreferrer">
-                <span class="name">{e.name}</span>
-                <span class="desc">{e.description}</span>
-                <span class="meta">{e.upstream ? "upstream" : "fork"} <span aria-hidden="true">↗</span></span>
-                <span class="sr-only"> (opens the {e.upstream ? "original" : "forked"} repository in a new tab)</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
+  <section class="block reveal" aria-labelledby="exp-h">
+    <h2 id="exp-h" class="label">Experience</h2>
+    <ul class="plain">
+      <li class="exp-row">
+        <span class="name">{site.employer}</span>
+        <span class="meta">{site.role}</span>
+      </li>
+    </ul>
+  </section>
 
-      <section class="block reveal" style={delay()} aria-labelledby="exp-h">
-        <h2 id="exp-h" class="label">Experience</h2>
-        <ul class="plain">
-          <li class="exp-row">
-            <span class="name">Mercedes-Benz Research and Development India</span>
-            <span class="meta">Associate Software Developer</span>
-          </li>
-        </ul>
-      </section>
+  <section class="block reveal" id="contact" aria-labelledby="contact-h">
+    <h2 id="contact-h" class="label">Contact</h2>
+    <p class="contact">
+      The best way to reach me is a message on{" "}
+      <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>. My code lives on{" "}
+      <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>.
+    </p>
+  </section>
+</Base>
 
-      <section class="block reveal" style={delay()} aria-labelledby="contact-h">
-        <h2 id="contact-h" class="label">Contact</h2>
-        <p class="contact">
-          The best way to reach me is a message on{" "}
-          <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>. My code lives on{" "}
-          <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>.
-        </p>
-      </section>
-    </main>
+<script>
+  const root = document.documentElement;
+  const store = {
+    get(k: string) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k: string, v: string) { try { localStorage.setItem(k, v); } catch { /* storage blocked */ } },
+  };
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 
-    <footer class="footer">
-      <span>Revanth Reddy · Bengaluru</span>
-      <span class="mono">Last updated <time datetime={built}>{built}</time></span>
-    </footer>
+  // Project layout: list (default) or grid.
+  const viewBtns = document.querySelectorAll<HTMLButtonElement>("[data-view-choice]");
+  const applyView = (v: string) => {
+    if (v === "grid") root.dataset.view = "grid"; else delete root.dataset.view;
+    viewBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.viewChoice === v)));
+  };
+  applyView(store.get("view") === "grid" ? "grid" : "list");
+  viewBtns.forEach((b) => b.addEventListener("click", () => {
+    const v = b.dataset.viewChoice!;
+    store.set("view", v);
+    applyView(v);
+  }));
 
-    <script>
-      const root = document.documentElement;
-      const store = {
-        get(k: string) { try { return localStorage.getItem(k); } catch { return null; } },
-        set(k: string, v: string) { try { localStorage.setItem(k, v); } catch { /* storage blocked */ } },
-      };
+  // Expandable project rows (disclosure pattern).
+  const setOpen = (btn: HTMLButtonElement, open: boolean) => {
+    const panel = document.getElementById(btn.getAttribute("aria-controls")!);
+    btn.setAttribute("aria-expanded", String(open));
+    if (panel) panel.hidden = !open;
+  };
+  document.querySelectorAll<HTMLButtonElement>(".project-btn").forEach((btn) => {
+    btn.addEventListener("click", () => setOpen(btn, btn.getAttribute("aria-expanded") !== "true"));
+  });
 
-      // Theme: an explicit choice is saved; otherwise follow the OS setting.
-      const mq = matchMedia("(prefers-color-scheme: dark)");
-      const themeBtns = document.querySelectorAll<HTMLButtonElement>("[data-theme-choice]");
-      const applyTheme = (t: string) => {
-        root.classList.toggle("dark", t === "dark");
-        themeBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.themeChoice === t)));
-      };
-      const saved = store.get("theme");
-      applyTheme(saved === "light" || saved === "dark" ? saved : mq.matches ? "dark" : "light");
-      themeBtns.forEach((b) => b.addEventListener("click", () => {
-        const t = b.dataset.themeChoice!;
-        store.set("theme", t);
-        applyTheme(t);
-      }));
-      mq.addEventListener("change", (e) => {
-        const s = store.get("theme");
-        if (s !== "light" && s !== "dark") applyTheme(e.matches ? "dark" : "light");
+  // Fan cards and #project-… links open the matching row.
+  const openFromHash = (id: string) => {
+    const li = document.getElementById(id);
+    const btn = li?.querySelector<HTMLButtonElement>(".project-btn");
+    if (!li || !btn) return false;
+    setOpen(btn, true);
+    return btn;
+  };
+  document.querySelectorAll<HTMLAnchorElement>("[data-open]").forEach((a) => {
+    a.addEventListener("click", (ev) => {
+      const btn = openFromHash(a.dataset.open!);
+      if (!btn) return;
+      ev.preventDefault();
+      history.pushState(null, "", `#${a.dataset.open}`);
+      btn.closest("li")!.scrollIntoView({ behavior: reduced.matches ? "auto" : "smooth", block: "start" });
+      btn.focus({ preventScroll: true });
+    });
+  });
+  if (location.hash.startsWith("#project-")) openFromHash(location.hash.slice(1));
+  addEventListener("hashchange", () => { if (location.hash.startsWith("#project-")) openFromHash(location.hash.slice(1)); });
+
+  // Floating cover preview near the cursor: list view, fine pointers only.
+  const preview = document.querySelector<HTMLElement>(".preview");
+  const fine = matchMedia("(hover: hover) and (pointer: fine)");
+  if (preview) {
+    let x = 0, y = 0, raf = 0;
+    const place = () => {
+      raf = 0;
+      const w = preview.offsetWidth, h = preview.offsetHeight;
+      const px = Math.min(x + 18, innerWidth - w - 12);
+      const py = Math.min(y + 18, innerHeight - h - 12);
+      preview.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+    };
+    const hide = () => preview.classList.remove("on");
+    document.querySelectorAll<HTMLElement>(".project").forEach((li) => {
+      const row = li.querySelector<HTMLElement>(".project-h")!;
+      row.addEventListener("pointerenter", (e) => {
+        if (!fine.matches || root.dataset.view === "grid" || e.pointerType !== "mouse") return;
+        // An open row already shows its details; the preview would only cover them.
+        if (li.querySelector(".project-btn")?.getAttribute("aria-expanded") === "true") return;
+        preview.querySelectorAll<HTMLElement>("[data-preview]").forEach((c) => c.classList.toggle("on", c.dataset.preview === li.dataset.repo));
+        x = e.clientX; y = e.clientY; place();
+        preview.classList.add("on");
       });
+      row.addEventListener("pointermove", (e) => {
+        x = e.clientX; y = e.clientY;
+        if (!raf) raf = requestAnimationFrame(place);
+      });
+      row.addEventListener("pointerleave", hide);
+      row.addEventListener("click", hide);
+    });
+    addEventListener("scroll", hide, { passive: true });
+    viewBtns.forEach((b) => b.addEventListener("click", hide));
+  }
 
-      // Project layout: list (default) or grid.
-      const viewBtns = document.querySelectorAll<HTMLButtonElement>("[data-view-choice]");
-      const applyView = (v: string) => {
-        if (v === "grid") root.dataset.view = "grid"; else delete root.dataset.view;
-        viewBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.viewChoice === v)));
-      };
-      applyView(store.get("view") === "grid" ? "grid" : "list");
-      viewBtns.forEach((b) => b.addEventListener("click", () => {
-        const v = b.dataset.viewChoice!;
-        store.set("view", v);
-        applyView(v);
-      }));
-    </script>
-  </body>
-</html>
+  // Contribution snake: animated, so under reduced motion it waits for an explicit request.
+  const snake = document.querySelector<HTMLElement>("[data-snake]");
+  const play = snake?.querySelector<HTMLButtonElement>(".snake-play");
+  if (snake && play && reduced.matches) {
+    snake.dataset.paused = "";
+    play.hidden = false;
+    play.addEventListener("click", () => {
+      delete snake.dataset.paused;
+      play.hidden = true;
+    });
+  }
+</script>

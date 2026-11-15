@@ -1,8 +1,8 @@
 ---
 // Typographic cover generated from the project name. Deterministic (same name,
 // same cover), theme-aware via CSS custom properties. Not a screenshot.
-interface Props { name: string; meta?: string }
-const { name, meta = "" } = Astro.props;
+interface Props { name: string; meta?: string; decorative?: boolean }
+const { name, meta = "", decorative = false } = Astro.props;
 
 let h = 2166136261;
 for (const ch of name) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
@@ -21,7 +21,7 @@ const angle = Math.round(rand() * 60 - 30);
 const initial = name.charAt(0).toUpperCase();
 const size = name.length > 12 ? 22 : 28;
 ---
-<svg class="cover" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Generated cover for ${name}`} preserveAspectRatio="xMidYMid slice">
+<svg class="cover" viewBox={`0 0 ${W} ${H}`} {...(decorative ? { "aria-hidden": "true", focusable: "false" } : { role: "img", "aria-label": `Generated cover for ${name}` })} preserveAspectRatio="xMidYMid slice">
   <rect width={W} height={H} class="c-bg" />
   {dots.map((d) => <circle cx={d.cx} cy={d.cy} r={d.r} class="c-dot" />)}
   <text x={W - 24} y={H + 24} class="c-initial" text-anchor="end" transform={`rotate(${angle} ${W - 60} ${H - 40})`}>{initial}</text>

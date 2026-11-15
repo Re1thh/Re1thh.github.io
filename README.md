@@ -1,6 +1,6 @@
 # re1thh.github.io
 
-Personal portfolio site for Revanth Reddy. A single static page built with [Astro](https://astro.build), with two small vanilla scripts (theme toggle, list/grid toggle) and self-hosted fonts.
+Personal portfolio site for Revanth Reddy. A single static page built with [Astro](https://astro.build): no client framework, a little vanilla JS (theme and list/grid toggles, expandable project rows, cover hover preview, section reveal) and self-hosted fonts. The only runtime request to another host is the contribution snake image from the `Re1thh/Re1thh` profile repo (`output` branch); if it fails to load, the Activity section hides itself.
 
 ## Run it
 
@@ -19,7 +19,7 @@ npm i --no-save --force @astrojs/compiler-binding-wasm32-wasi@0.5.3
 
 Astro falls back to it automatically. Re-run that after any `npm install`. CI (Linux) does not need it.
 
-At build time the site fetches `https://api.github.com/users/Re1thh/repos` to fill in each project's language, last-push year and stars. Set `GITHUB_TOKEN` to raise the rate limit. If the request fails, times out (6 s) or is rate-limited, the build still succeeds and uses the `fallback` values in `projects.json`. `GITHUB_API_URL` overrides the endpoint (useful to test the fallback, e.g. `GITHUB_API_URL=http://127.0.0.1:9/ npm run build`).
+At build time the site fetches `https://api.github.com/users/Re1thh/repos` to fill in each project's language and last-push year, plus the star count when it is above 0. Set `GITHUB_TOKEN` to raise the rate limit. If the request fails, times out (6 s) or is rate-limited, the build still succeeds and uses the `fallback` values in `projects.json`. `GITHUB_API_URL` overrides the endpoint (useful to test the fallback, e.g. `GITHUB_API_URL=http://127.0.0.1:9/ npm run build`).
 
 ## Edit the content
 
@@ -30,20 +30,29 @@ At build time the site fetches `https://api.github.com/users/Re1thh/repos` to fi
 | `repo` | exact GitHub repo name under `Re1thh` (used to match API data and build the link) |
 | `title` | name shown on the page |
 | `description` | one short line; it is truncated with an ellipsis in list view |
-| `stack` | shown on the grid card cover |
+| `stack` | shown on the covers and as chips in the expanded row |
+| `highlights` | 2–3 bullets shown when the row is expanded; describe only what the code really does |
+| `note` | one honest line about the project's scope (e.g. a 2023 learning project) |
 | `featured` | sort order (1 first) |
 | `fallback` | `language`, `year`, `stars` used when the GitHub API is unavailable |
 
-**`src/data/exploring.json`** — open-source projects you forked to study, shown under "Currently exploring" and labelled as not your work.
+**`src/data/exploring.json`** — open-source projects by other people that you forked to study, shown under "Currently exploring" and labelled as not your work.
 
 | field | meaning |
 |---|---|
-| `name` | `owner/repo` as shown |
-| `description` | one short line |
-| `url` | link target; currently the upstream repo |
-| `upstream` | `true` labels the link "upstream"; set `false` (and point `url` at your fork) to label it "fork" |
+| `repo` | repository name (shown, links to `fork`) |
+| `owner` | upstream owner, shown as the "by …" credit link to `upstream` |
+| `description` | one short line about the upstream project |
+| `studying` | one neutral clause: what you are reading it for |
+| `fork` | your fork, `https://github.com/Re1thh/<repo>` |
+| `upstream` | the original, `https://github.com/<owner>/<repo>` |
 
-Other copy (hero, "Now" block, experience) lives in `src/pages/index.astro`.
+Other copy (hero, "Now" block, stack groups, experience) lives in `src/pages/index.astro`; shared facts (name, role, employer, links) in `src/lib/site.js`. Head tags, top bar and footer are in `src/layouts/Base.astro`, shared with `src/pages/404.astro`.
+
+## SEO files
+
+- `public/robots.txt` and `src/pages/sitemap.xml.js` (hand-written, one URL).
+- `public/og.png` (1200×630, the social preview) is generated, then committed. Regenerate it after changing the name or role line with `npm run og` (`scripts/og.mjs`). It renders an HTML page with the self-hosted fonts in a locally installed headless Chrome, Chromium or Edge; set `CHROME_PATH` if the browser is not found. No npm dependency is involved.
 
 ## Deploy
 

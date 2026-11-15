@@ -1,44 +1,66 @@
 [
   {
-    "name": "ta4j/ta4j",
+    "repo": "ta4j",
+    "owner": "ta4j",
     "description": "Java library for technical-analysis indicators.",
-    "url": "https://github.com/ta4j/ta4j",
-    "upstream": true
+    "studying": "indicator and backtesting API design",
+    "fork": "https://github.com/Re1thh/ta4j",
+    "upstream": "https://github.com/ta4j/ta4j"
   },
   {
-    "name": "tradingview/lightweight-charts",
+    "repo": "lightweight-charts",
+    "owner": "tradingview",
     "description": "Small, fast financial charting library for the web.",
-    "url": "https://github.com/tradingview/lightweight-charts",
-    "upstream": true
+    "studying": "canvas rendering and TypeScript API",
+    "fork": "https://github.com/Re1thh/lightweight-charts",
+    "upstream": "https://github.com/tradingview/lightweight-charts"
   },
   {
-    "name": "raeperd/realworld-springboot-java",
+    "repo": "realworld-springboot-java",
+    "owner": "raeperd",
     "description": "RealWorld example backend built with Spring Boot.",
-    "url": "https://github.com/raeperd/realworld-springboot-java",
-    "upstream": true
+    "studying": "layering, security setup and tests",
+    "fork": "https://github.com/Re1thh/realworld-springboot-java",
+    "upstream": "https://github.com/raeperd/realworld-springboot-java"
   },
   {
-    "name": "spring-petclinic/spring-petclinic-microservices",
+    "repo": "spring-petclinic-microservices",
+    "owner": "spring-petclinic",
     "description": "Reference microservices app built on Spring Cloud.",
-    "url": "https://github.com/spring-petclinic/spring-petclinic-microservices",
-    "upstream": true
+    "studying": "service discovery, config and gateway patterns",
+    "fork": "https://github.com/Re1thh/spring-petclinic-microservices",
+    "upstream": "https://github.com/spring-petclinic/spring-petclinic-microservices"
   },
   {
-    "name": "langchain-ai/local-deep-researcher",
+    "repo": "local-deep-researcher",
+    "owner": "langchain-ai",
     "description": "Research agent that runs on a local LLM.",
-    "url": "https://github.com/langchain-ai/local-deep-researcher",
-    "upstream": true
+    "studying": "how the agent loop is structured",
+    "fork": "https://github.com/Re1thh/local-deep-researcher",
+    "upstream": "https://github.com/langchain-ai/local-deep-researcher"
   },
   {
-    "name": "evidence-dev/evidence",
+    "repo": "evidence",
+    "owner": "evidence-dev",
     "description": "Business intelligence as code: reports from SQL and Markdown.",
-    "url": "https://github.com/evidence-dev/evidence",
-    "upstream": true
+    "studying": "SQL-plus-Markdown reporting",
+    "fork": "https://github.com/Re1thh/evidence",
+    "upstream": "https://github.com/evidence-dev/evidence"
   },
   {
-    "name": "alan2207/bulletproof-react",
+    "repo": "bulletproof-react",
+    "owner": "alan2207",
     "description": "Guide to a scalable architecture for React apps.",
-    "url": "https://github.com/alan2207/bulletproof-react",
-    "upstream": true
+    "studying": "feature-based project structure",
+    "fork": "https://github.com/Re1thh/bulletproof-react",
+    "upstream": "https://github.com/alan2207/bulletproof-react"
+  },
+  {
+    "repo": "DevOps-Projects",
+    "owner": "NotHarshhaa",
+    "description": "A collection of DevOps projects.",
+    "studying": "CI/CD and deployment workflows",
+    "fork": "https://github.com/Re1thh/DevOps-Projects",
+    "upstream": "https://github.com/NotHarshhaa/DevOps-Projects"
   }
 ]
