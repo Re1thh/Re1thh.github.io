@@ -88,7 +88,7 @@ const snake = "https://raw.githubusercontent.com/Re1thh/Re1thh/output";
         </button>
       </div>
     </div>
-    <p class="note">Small learning projects first built in 2023; the year on each row is the latest push. Select a row for details.</p>
+    <p class="note">Small learning projects first built in 2023. Select a row for details.</p>
 
     <ul class="projects" id="projects">
       {projects.map((p) => (
@@ -103,7 +103,7 @@ const snake = "https://raw.githubusercontent.com/Re1thh/Re1thh/output";
                 <span class="desc">{p.description}</span>
                 <span class="meta">
                   <span class="sr-only">Primary language </span>{p.language}
-                  {p.year && <><span class="sep" aria-hidden="true"> · </span><span class="sr-only">, last updated </span>{p.year}</>}
+                  {p.year && <><span class="sep" aria-hidden="true"> · </span><span class="sr-only">{p.yearKind === "pushed" ? ", last pushed in " : ", built in "}</span><span title={p.yearKind === "pushed" ? "Year of the latest push" : "Year built"}>{p.year}</span></>}
                   {p.live && p.stars > 0 && <><span class="sep" aria-hidden="true"> · </span><span aria-hidden="true">★ </span>{p.stars}<span class="sr-only"> stars</span></>}
                 </span>
                 <span class="chev" aria-hidden="true"></span>
