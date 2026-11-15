@@ -5,7 +5,9 @@
 //   GITHUB_TOKEN    optional; raises the rate limit (passed in by the deploy workflow).
 //                   Sent only when non-empty; if it is rejected (401/403) the request is
 //                   retried once without it before falling back.
-//   GITHUB_API_URL  optional; overrides the repos endpoint (handy for testing the fallback)
+//   SITE_REPOS_URL  optional; overrides the repos endpoint (handy for testing the fallback).
+//                   Deliberately not GITHUB_API_URL: Actions sets that on every job to the
+//                   API root, which is not the repos list.
 
 const DEFAULT_URL = "https://api.github.com/users/Re1thh/repos?per_page=100";
 const TIMEOUT_MS = 10000;
@@ -44,7 +46,7 @@ async function request(url, token) {
 
 async function load() {
   const env = globalThis.process?.env ?? {};
-  const url = env["GITHUB_API_URL"] || DEFAULT_URL;
+  const url = env["SITE_REPOS_URL"] || DEFAULT_URL;
   const token = readToken();
   let mode = token ? "authenticated" : "unauthenticated (no token set)";
   try {
